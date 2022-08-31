@@ -10,8 +10,8 @@
 
         public string Thumbnail { get; set; }
 
-        public ICollection<CategoryItemEntity> CategoryItems { get; set; }
+        public ICollection<CategoryItemEntity> CategoryItems { get; set; } = new List<CategoryItemEntity>();
 
-        public ICollection<UserCategoryEntity> UserCategories { get; set; }
+        public ICollection<UserCategoryEntity> UserCategories { get; set; } = new List<UserCategoryEntity>();
     }
 }

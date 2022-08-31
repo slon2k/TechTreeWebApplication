@@ -8,6 +8,6 @@
 
         public string Thumbnail { get; set; }
 
-        public ICollection<CategoryItemEntity> CategoryItems { get; set; }
+        public ICollection<CategoryItemEntity> CategoryItems { get; set; } = new List<CategoryItemEntity>();
     }
 }
