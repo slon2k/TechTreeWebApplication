@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using TechTreeWebApplication.Entities;
 using TechTreeWebApplication.Extensions;
+using TechTreeWebApplication.Converters;
 
 namespace TechTreeWebApplication.EntityConfigurations
 {
@@ -16,6 +17,10 @@ namespace TechTreeWebApplication.EntityConfigurations
             builder.HasTitle();
 
             builder.HasDescription();
+
+            builder.Property(e => e.DateReleased)
+                .HasConversion<DateOnlyConverter>()
+                .HasColumnType("date"); ;
 
             builder.HasOne(e => e.Category)
                 .WithMany(e => e.CategoryItems)
