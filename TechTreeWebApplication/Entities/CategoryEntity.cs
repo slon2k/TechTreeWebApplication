@@ -1,6 +1,6 @@
 ﻿namespace TechTreeWebApplication.Entities
 {
-    public class CategoryEntity : Id<int>, ITitle, IEntity
+    public class CategoryEntity : IEntity, Id<int>, ITitle, IThumbnail
     {
         public int Id { get; init; }
         

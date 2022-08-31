@@ -22,5 +22,13 @@ namespace TechTreeWebApplication.Extensions
                 .IsRequired()
                 .HasMaxLength(255);
         }
+
+        internal static PropertyBuilder HasThumbnail<TEntity>(this EntityTypeBuilder<TEntity> builder) where TEntity : class, IEntity, IThumbnail
+        {
+            return builder.Property(e => e.Thumbnail)
+                .HasColumnName("Thumbnail")
+                .IsRequired()
+                .HasMaxLength(255);
+        }
     }
 }

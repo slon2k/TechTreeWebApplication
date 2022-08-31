@@ -18,10 +18,8 @@ namespace TechTreeWebApplication.EntityConfigurations
             builder.Property(e => e.Description)
                 .HasColumnName("Description")
                 .HasMaxLength(4000);
-            
-            builder.Property(e => e.Thumbnail)
-                .IsRequired()
-                .HasMaxLength(255);
+
+            builder.HasThumbnail();
         }
     }
 }
