@@ -35,7 +35,7 @@ namespace TechTreeWebApplication.Extensions
         {
             return builder.Property(e => e.Description)
                 .HasColumnName("Description")
-                .IsRequired()
+                .IsRequired(false)
                 .HasMaxLength(4000);
         }
     }

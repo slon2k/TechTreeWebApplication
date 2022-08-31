@@ -5,17 +5,19 @@ using TechTreeWebApplication.Extensions;
 
 namespace TechTreeWebApplication.EntityConfigurations
 {
-    public class CategoryConfiguration : IEntityTypeConfiguration<CategoryItemEntity>
+    public class CategoryConfiguration : IEntityTypeConfiguration<CategoryEntity>
     {
-        public void Configure(EntityTypeBuilder<CategoryItemEntity> builder)
+        public void Configure(EntityTypeBuilder<CategoryEntity> builder)
         {
             builder.ToTable("Category");
             
-            builder.HasUniqueIdentifier<CategoryItemEntity, int>();
+            builder.HasUniqueIdentifier<CategoryEntity, int>();
             
             builder.HasTitle();
             
             builder.HasDescription();
+
+            builder.HasThumbnail();
         }
     }
 }
