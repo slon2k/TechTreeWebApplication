@@ -19,5 +19,7 @@ namespace TechTreeWebApplication.Entities
 
         [StringLength(50)]
         public string PostCode { get; set; }
+
+        public ICollection<UserCategoryEntity> UserCategories { get; set; }
     }
 }

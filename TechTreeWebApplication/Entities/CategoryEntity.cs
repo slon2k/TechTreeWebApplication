@@ -11,5 +11,7 @@
         public string Thumbnail { get; set; }
 
         public ICollection<CategoryItemEntity> CategoryItems { get; set; }
+
+        public ICollection<UserCategoryEntity> UserCategories { get; set; }
     }
 }

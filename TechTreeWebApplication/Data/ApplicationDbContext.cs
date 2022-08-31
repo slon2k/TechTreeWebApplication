@@ -20,6 +20,8 @@ namespace TechTreeWebApplication.Data
 
         public DbSet<ContentEntity> Contents { get; set; }
 
+        public DbSet<UserCategoryEntity> UserCategories { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
