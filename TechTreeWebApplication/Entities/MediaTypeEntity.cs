@@ -1,8 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Xml.Linq;
-
-namespace TechTreeWebApplication.Entities
+﻿namespace TechTreeWebApplication.Entities
 {
     public class MediaTypeEntity : Id<int>, IEntity, ITitle, IThumbnail
     {
@@ -11,5 +7,7 @@ namespace TechTreeWebApplication.Entities
         public string Title { get; set; }
 
         public string Thumbnail { get; set; }
+
+        public ICollection<CategoryItemEntity> CategoryItems { get; set; }
     }
 }

@@ -30,5 +30,13 @@ namespace TechTreeWebApplication.Extensions
                 .IsRequired()
                 .HasMaxLength(255);
         }
+
+        internal static PropertyBuilder HasDescription<TEntity>(this EntityTypeBuilder<TEntity> builder) where TEntity : class, IEntity, IDescription
+        {
+            return builder.Property(e => e.Description)
+                .HasColumnName("Description")
+                .IsRequired()
+                .HasMaxLength(4000);
+        }
     }
 }
