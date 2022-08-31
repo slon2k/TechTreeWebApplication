@@ -12,7 +12,9 @@ namespace TechTreeWebApplication.Data
         {
         }
 
-        public DbSet<CategoryEntity> Category { get; set; }
+        public DbSet<CategoryItemEntity> Categories { get; set; }
+
+        public DbSet<MediaTypeEntity> MediaTypes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
