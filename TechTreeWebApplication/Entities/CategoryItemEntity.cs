@@ -17,5 +17,7 @@
         public CategoryEntity Category { get; set; }
 
         public MediaTypeEntity MediaType { get; set; }
+
+        public ContentEntity Content { get; set; }
     }
 }

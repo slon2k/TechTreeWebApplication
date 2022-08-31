@@ -32,6 +32,11 @@ namespace TechTreeWebApplication.EntityConfigurations
                 .WithMany(e => e.CategoryItems)
                 .HasForeignKey(e => e.MediaTypeId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasOne(e => e.Content)
+                .WithOne(e => e.CategoryItem)
+                .HasForeignKey<ContentEntity>(e => e.CategoryItemId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
