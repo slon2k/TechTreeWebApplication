@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using TechTreeWebApplication.Data;
+using TechTreeWebApplication.Data.Repositories;
 using TechTreeWebApplication.Entities;
+using TechTreeWebApplication.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +14,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
