@@ -1,41 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using TechTreeWebApplication.Data;
-using TechTreeWebApplication.Entities;
+using TechTreeWebApplication.Areas.Admin.Models.Category;
+using TechTreeWebApplication.Interfaces;
 
 namespace TechTreeWebApplication.Areas.Admin.Pages.Categories
 {
     public class EditModel : PageModel
     {
-        private readonly TechTreeWebApplication.Data.ApplicationDbContext _context;
+        private readonly ICategoryRepository repository;
 
-        public EditModel(TechTreeWebApplication.Data.ApplicationDbContext context)
+        public EditModel(ICategoryRepository repository)
         {
-            _context = context;
+            ArgumentNullException.ThrowIfNull(repository, nameof(repository));
+            this.repository = repository;
         }
 
         [BindProperty]
-        public CategoryEntity CategoryEntity { get; set; } = default!;
+        public CategoryModel Category { get; set; } = default!;
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(int id)
         {
-            if (id == null || _context.Categories == null)
+            var category =  await repository.FindAsync(id);
+  
+            if (category is null)
             {
                 return NotFound();
             }
 
-            var categoryentity =  await _context.Categories.FirstOrDefaultAsync(m => m.Id == id);
-            if (categoryentity == null)
+            Category = new CategoryModel
             {
-                return NotFound();
-            }
-            CategoryEntity = categoryentity;
+                Id = category.Id,
+                Title = category.Title,
+                Description = category.Description,
+                Thumbnail = category.Thumbnail,
+            };
+            
             return Page();
         }
 
@@ -43,20 +43,31 @@ namespace TechTreeWebApplication.Areas.Admin.Pages.Categories
         // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || Category is null)
             {
                 return Page();
             }
 
-            _context.Attach(CategoryEntity).State = EntityState.Modified;
+            var categoryEntity = await repository.FindAsync(Category.Id);
+
+            if (categoryEntity is null)
+            {
+                return NotFound();
+            }
+
+            categoryEntity.Title = Category.Title;
+            categoryEntity.Description = Category.Description;
+            categoryEntity.Thumbnail = Category.Thumbnail;
+
+            repository.Update(categoryEntity);
 
             try
             {
-                await _context.SaveChangesAsync();
+                await repository.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CategoryEntityExists(CategoryEntity.Id))
+                if (! await repository.AnyAsync(Category.Id))
                 {
                     return NotFound();
                 }
@@ -67,11 +78,6 @@ namespace TechTreeWebApplication.Areas.Admin.Pages.Categories
             }
 
             return RedirectToPage("./Index");
-        }
-
-        private bool CategoryEntityExists(int id)
-        {
-          return (_context.Categories?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

@@ -58,7 +58,7 @@ namespace TechTreeWebApplication.Data.Repositories
             await context.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task Update(TEntity item)
+        public void Update(TEntity item)
         {
             context.Entry(item).State = EntityState.Modified;
         }

@@ -17,7 +17,7 @@ namespace TechTreeWebApplication.Interfaces
 
         Task AddAsync(TEntity item, CancellationToken cancellationToken = default);
 
-        Task Update(TEntity item);
+        void Update(TEntity item);
 
         Task SaveChangesAsync(CancellationToken cancellationToken = default);
     }
