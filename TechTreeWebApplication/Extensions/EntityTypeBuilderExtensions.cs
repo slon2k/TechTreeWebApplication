@@ -6,7 +6,7 @@ namespace TechTreeWebApplication.Extensions
 {
     internal static class EntityTypeBuilderExtensions
     {
-        internal static PropertyBuilder HasUniqueIdentifier<TEntity, TKey>(this EntityTypeBuilder<TEntity> builder) where TEntity : class, IEntity, Id<TKey>
+        internal static PropertyBuilder HasUniqueIdentifier<TEntity, TKey>(this EntityTypeBuilder<TEntity> builder) where TEntity : class, IEntity, Id<TKey> where TKey : struct
         {
             builder.HasKey(e => e.Id);
             
