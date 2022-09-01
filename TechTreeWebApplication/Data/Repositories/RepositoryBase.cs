@@ -6,7 +6,7 @@ namespace TechTreeWebApplication.Data.Repositories
 {
     public abstract class RepositoryBase<TEntity, TKey> : IRepository<TEntity, TKey> where TEntity : class, IEntity, Id<TKey> where TKey : struct
     {
-        private readonly ApplicationDbContext context;
+        protected readonly ApplicationDbContext context;
 
         protected RepositoryBase(ApplicationDbContext context)
         {
