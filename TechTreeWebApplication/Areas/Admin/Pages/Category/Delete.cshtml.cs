@@ -1,60 +1,60 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using TechTreeWebApplication.Data;
-using TechTreeWebApplication.Entities;
+using TechTreeWebApplication.Areas.Admin.Models.Category;
+using TechTreeWebApplication.Interfaces;
 
-namespace TechTreeWebApplication.Areas.Admin.Pages.Categories
+namespace TechTreeWebApplication.Areas.Admin.Pages.Category
 {
     public class DeleteModel : PageModel
     {
-        private readonly TechTreeWebApplication.Data.ApplicationDbContext _context;
-
-        public DeleteModel(TechTreeWebApplication.Data.ApplicationDbContext context)
+        private readonly ICategoryRepository repository;
+        
+        public DeleteModel(ICategoryRepository repository)
         {
-            _context = context;
+            ArgumentNullException.ThrowIfNull(repository, nameof(repository));
+            this.repository = repository;
         }
 
         [BindProperty]
-      public CategoryEntity CategoryEntity { get; set; } = default!;
+        public CategoryModel Category { get; set; } = default!;
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(int id)
         {
-            if (id == null || _context.Categories == null)
+            var entity = await repository.FindAsync(id);
+
+            if (entity is null)
             {
                 return NotFound();
             }
 
-            var categoryentity = await _context.Categories.FirstOrDefaultAsync(m => m.Id == id);
+            Category = new CategoryModel 
+            { 
+                Id = entity.Id,
+                Description = entity.Description,
+                Thumbnail = entity.Thumbnail,
+                Title = entity.Title
+            };
 
-            if (categoryentity == null)
-            {
-                return NotFound();
-            }
-            else 
-            {
-                CategoryEntity = categoryentity;
-            }
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(int? id)
+        public async Task<IActionResult> OnPostAsync(int id)
         {
-            if (id == null || _context.Categories == null)
+            if (! await repository.AnyAsync(id))
             {
                 return NotFound();
             }
-            var categoryentity = await _context.Categories.FindAsync(id);
+            
+            await repository.DeleteAsync(id);
 
-            if (categoryentity != null)
+            try
             {
-                CategoryEntity = categoryentity;
-                _context.Categories.Remove(CategoryEntity);
-                await _context.SaveChangesAsync();
+                await repository.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
 
             return RedirectToPage("./Index");
