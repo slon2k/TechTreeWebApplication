@@ -16,6 +16,11 @@ namespace TechTreeWebApplication.EntityConfigurations
             builder.HasTitle();
 
             builder.HasThumbnail();
+
+            builder.HasData(new List<MediaTypeEntity>() {
+                new MediaTypeEntity { Id = 1, Title = "Article", Thumbnail = "/images/ArticleImage.jpeg" },
+                new MediaTypeEntity { Id = 2, Title = "Video", Thumbnail = "/images/VideoImage.jpeg" }
+            });
         }
     }
 }
