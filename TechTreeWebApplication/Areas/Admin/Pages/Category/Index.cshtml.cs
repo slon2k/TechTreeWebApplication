@@ -26,7 +26,6 @@ namespace TechTreeWebApplication.Areas.Admin.Pages.Category
                 Description = c.Description,
                 Thumbnail = c.Thumbnail
             }).ToList();
-
         }
     }
 }
