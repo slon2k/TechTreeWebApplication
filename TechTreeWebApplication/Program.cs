@@ -16,6 +16,7 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ICategoryItemRepository, CategoryItemRepository>();
+builder.Services.AddScoped<IMediaTypeRepository, MediaTypeRepository>();
 builder.Services.AddRazorPages();
 
 var app = builder.Build();

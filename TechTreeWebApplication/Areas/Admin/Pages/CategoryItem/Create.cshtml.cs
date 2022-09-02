@@ -1,45 +1,83 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using TechTreeWebApplication.Data;
+using TechTreeWebApplication.Areas.Admin.Models.Category;
+using TechTreeWebApplication.Areas.Admin.Models.CategoryItem;
 using TechTreeWebApplication.Entities;
+using TechTreeWebApplication.Interfaces;
 
 namespace TechTreeWebApplication.Areas.Admin.Pages.CategoryItem
 {
     public class CreateModel : PageModel
     {
-        private readonly TechTreeWebApplication.Data.ApplicationDbContext _context;
+        private readonly ICategoryItemRepository categoryItemRepository;
+        private readonly ICategoryRepository categoryRepository;
+        private readonly IMediaTypeRepository mediaTypeRepository;
 
-        public CreateModel(TechTreeWebApplication.Data.ApplicationDbContext context)
+        [BindProperty]
+        public CategoryItemCreate CategoryItem { get; set; } = default!;
+
+        public CategoryModel Category { get; set; } = default!;
+
+        public SelectList CategorySelectList { get; set; } = default!;
+
+        public SelectList MediaTypeSelectList { get; set; } = default!;
+
+        public CreateModel(ICategoryItemRepository categoryItemRepository,
+            ICategoryRepository categoryRepository,
+            IMediaTypeRepository mediaTypeRepository)
         {
-            _context = context;
+            ArgumentNullException.ThrowIfNull(categoryItemRepository, nameof(categoryItemRepository));
+            ArgumentNullException.ThrowIfNull(categoryRepository, nameof(categoryRepository));
+            ArgumentNullException.ThrowIfNull(mediaTypeRepository, nameof(mediaTypeRepository));
+            this.categoryItemRepository = categoryItemRepository;
+            this.categoryRepository = categoryRepository;
+            this.mediaTypeRepository = mediaTypeRepository;
         }
-
-        public IActionResult OnGet(int categoryId)
+        
+        public async Task<IActionResult> OnGet(int categoryId)
         {
-        ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Thumbnail");
-        ViewData["MediaTypeId"] = new SelectList(_context.MediaTypes, "Id", "Thumbnail");
+            CategorySelectList = new SelectList(await categoryRepository.GetAllAsync(), "Id", "Title");
+            MediaTypeSelectList = new SelectList(await mediaTypeRepository.GetAllAsync(), "Id", "Title");
+
+            var category = await categoryRepository.FindAsync(categoryId);
+
+            if (category is null)
+            {
+                return NotFound();
+            }
+
+            Category = new CategoryModel
+            {
+                Description = category.Description,
+                Title = category.Title,
+                Thumbnail = category.Thumbnail,
+                Id = category.Id
+            };
+
             return Page();
         }
 
-        [BindProperty]
-        public CategoryItemEntity CategoryItemEntity { get; set; } = default!;
-        
+
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-          if (!ModelState.IsValid || _context.CategoryItems == null || CategoryItemEntity == null)
+          if (!ModelState.IsValid || CategoryItem is null)
             {
                 return Page();
             }
 
-            _context.CategoryItems.Add(CategoryItemEntity);
-            await _context.SaveChangesAsync();
+            await categoryItemRepository.AddAsync(new CategoryItemEntity 
+            {
+                CategoryId = Category.Id,
+                Title = CategoryItem.Title,
+                Description = CategoryItem.Description,
+                MediaTypeId = CategoryItem.MediaTypeId,
+                DateReleased = CategoryItem.DateReleased,
+            });
+            
+            await categoryItemRepository.SaveChangesAsync();
 
             return RedirectToPage("./Index");
         }

@@ -5,7 +5,7 @@ namespace TechTreeWebApplication.Areas.Admin.Models.CategoryItem
     public class CategoryItemCreate
     {
         [Required]
-        public int CategoryId { get; init; }
+        public int CategoryId { get; set; }
 
         [Required]
         public int MediaTypeId { get; set; }
