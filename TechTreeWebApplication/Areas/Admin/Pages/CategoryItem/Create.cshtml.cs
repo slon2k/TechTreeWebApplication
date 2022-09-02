@@ -37,7 +37,6 @@ namespace TechTreeWebApplication.Areas.Admin.Pages.CategoryItem
         
         public async Task<IActionResult> OnGet(int categoryId)
         {
-            CategorySelectList = new SelectList(await categoryRepository.GetAllAsync(), "Id", "Title");
             MediaTypeSelectList = new SelectList(await mediaTypeRepository.GetAllAsync(), "Id", "Title");
 
             var category = await categoryRepository.FindAsync(categoryId);
@@ -55,6 +54,8 @@ namespace TechTreeWebApplication.Areas.Admin.Pages.CategoryItem
                 Id = category.Id
             };
 
+            CategoryItem = new CategoryItemCreate { CategoryId = categoryId };
+
             return Page();
         }
 
@@ -63,14 +64,36 @@ namespace TechTreeWebApplication.Areas.Admin.Pages.CategoryItem
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-          if (!ModelState.IsValid || CategoryItem is null)
+            if (CategoryItem is null)
             {
+                return BadRequest();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                var category = await categoryRepository.FindAsync(CategoryItem.CategoryId);
+
+                if (category is null)
+                {
+                    return NotFound();
+                }
+
+                MediaTypeSelectList = new SelectList(await mediaTypeRepository.GetAllAsync(), "Id", "Title");
+
+                Category = new CategoryModel
+                {
+                    Description = category.Description,
+                    Title = category.Title,
+                    Thumbnail = category.Thumbnail,
+                    Id = category.Id
+                };
+
                 return Page();
             }
 
             await categoryItemRepository.AddAsync(new CategoryItemEntity 
             {
-                CategoryId = Category.Id,
+                CategoryId = CategoryItem.CategoryId,
                 Title = CategoryItem.Title,
                 Description = CategoryItem.Description,
                 MediaTypeId = CategoryItem.MediaTypeId,

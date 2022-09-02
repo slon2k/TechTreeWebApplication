@@ -7,19 +7,16 @@
 
 <h1>Create</h1>
 
-<h4>CategoryItemEntity</h4>
+<h4>@Model.Category.Title</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="CategoryItem.CategoryId" class="control-label"></label>
-                <select asp-for="CategoryItem.CategoryId" class ="form-control" asp-items=@Model.CategorySelectList></select>
-            </div>
+            <input type="hidden" asp-for="CategoryItem.CategoryId" />
             <div class="form-group">
                 <label asp-for="CategoryItem.MediaTypeId" class="control-label"></label>
-                <select asp-for="CategoryItem.MediaTypeId" asp-items=@Model.MediaTypeSelectList></select>
+                <select asp-for="CategoryItem.MediaTypeId" class ="form-control" asp-items=@Model.MediaTypeSelectList></select>
             </div>
             <div class="form-group">
                 <label asp-for="CategoryItem.Title" class="control-label"></label>

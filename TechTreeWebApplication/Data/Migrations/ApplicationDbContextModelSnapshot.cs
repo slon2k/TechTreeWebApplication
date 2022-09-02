@@ -409,7 +409,7 @@ namespace TechTreeWebApplication.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("UserCategories");
+                    b.ToTable("UserCategories", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
