@@ -22,8 +22,6 @@ namespace TechTreeWebApplication.Areas.Admin.Models.CategoryItem
         public string Description { get; set; }
 
         [DataType(DataType.Date)]
-        public DateOnly DateReleased { get; set; } = DateOnly.MinValue;
-
-        public string Category { get; set; }
+        public DateTime DateReleased { get; set; } = DateTime.MinValue;
     }
 }

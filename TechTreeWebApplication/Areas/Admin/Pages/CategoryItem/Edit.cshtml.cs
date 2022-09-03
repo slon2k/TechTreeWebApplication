@@ -1,43 +1,68 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using TechTreeWebApplication.Data;
-using TechTreeWebApplication.Entities;
+using TechTreeWebApplication.Areas.Admin.Models.Category;
+using TechTreeWebApplication.Areas.Admin.Models.CategoryItem;
+using TechTreeWebApplication.Interfaces;
 
 namespace TechTreeWebApplication.Areas.Admin.Pages.CategoryItem
 {
     public class EditModel : PageModel
     {
-        private readonly TechTreeWebApplication.Data.ApplicationDbContext _context;
+        private readonly ICategoryItemRepository categoryItemRepository;
+        private readonly ICategoryRepository categoryRepository;
+        private readonly IMediaTypeRepository mediaTypeRepository;
 
-        public EditModel(TechTreeWebApplication.Data.ApplicationDbContext context)
+        public EditModel(ICategoryItemRepository categoryItemRepository, ICategoryRepository categoryRepository, IMediaTypeRepository mediaTypeRepository)
         {
-            _context = context;
+            this.categoryItemRepository = categoryItemRepository ?? throw new ArgumentNullException(nameof(categoryItemRepository));
+            this.categoryRepository = categoryRepository ?? throw new ArgumentNullException(nameof(categoryRepository));
+            this.mediaTypeRepository = mediaTypeRepository ?? throw new ArgumentNullException(nameof(mediaTypeRepository));
         }
 
         [BindProperty]
-        public CategoryItemEntity CategoryItemEntity { get; set; } = default!;
+        public CategoryItemModel CategoryItem { get; set; } = default!;
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public CategoryModel Category { get; set; } = default!;
+
+        public SelectList MediaTypeSelectList { get; set; } = default!;
+
+        public async Task<IActionResult> OnGetAsync(int id)
         {
-            if (id == null || _context.CategoryItems == null)
+            var categoryItem = await categoryItemRepository.FindAsync(id);
+
+            if (categoryItem is null)
             {
                 return NotFound();
             }
 
-            var categoryitementity =  await _context.CategoryItems.FirstOrDefaultAsync(m => m.Id == id);
-            if (categoryitementity == null)
+            var category = await categoryRepository.FindAsync(categoryItem.CategoryId);
+
+            if (category is null)
             {
                 return NotFound();
             }
-            CategoryItemEntity = categoryitementity;
-           ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Thumbnail");
-           ViewData["MediaTypeId"] = new SelectList(_context.MediaTypes, "Id", "Thumbnail");
+
+            MediaTypeSelectList = new SelectList(await mediaTypeRepository.GetAllAsync(), "Id", "Title");
+
+            Category = new CategoryModel
+            {
+                Description = category.Description,
+                Title = category.Title,
+                Thumbnail = category.Thumbnail,
+                Id = category.Id
+            };
+
+            CategoryItem = new CategoryItemModel 
+            {
+                Id = categoryItem.Id,
+                MediaTypeId = categoryItem.MediaTypeId,
+                Title = categoryItem.Title,
+                DateReleased = categoryItem.DateReleased.ToDateTime(TimeOnly.MinValue),
+                CategoryId = categoryItem.CategoryId,
+                Description = categoryItem.Description,
+            };
+
             return Page();
         }
 
@@ -45,35 +70,49 @@ namespace TechTreeWebApplication.Areas.Admin.Pages.CategoryItem
         // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
+            if (CategoryItem is null)
+            {
+                return BadRequest();
+            }
+
             if (!ModelState.IsValid)
             {
-                return Page();
-            }
+                var category = await categoryRepository.FindAsync(CategoryItem.CategoryId);
 
-            _context.Attach(CategoryItemEntity).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CategoryItemEntityExists(CategoryItemEntity.Id))
+                if (category is null)
                 {
                     return NotFound();
                 }
-                else
+
+                MediaTypeSelectList = new SelectList(await mediaTypeRepository.GetAllAsync(), "Id", "Title");
+
+                Category = new CategoryModel
                 {
-                    throw;
-                }
+                    Description = category.Description,
+                    Title = category.Title,
+                    Thumbnail = category.Thumbnail,
+                    Id = category.Id
+                };
+
+                return Page();
             }
 
-            return RedirectToPage("./Index");
-        }
+            var categoryItemEntity = await categoryItemRepository.FindAsync(CategoryItem.Id);
 
-        private bool CategoryItemEntityExists(int id)
-        {
-          return (_context.CategoryItems?.Any(e => e.Id == id)).GetValueOrDefault();
+            if (categoryItemEntity is null)
+            {
+                return NotFound();
+            }
+
+            categoryItemEntity.Title = CategoryItem.Title;
+            categoryItemEntity.Description = CategoryItem.Description;
+            categoryItemEntity.MediaTypeId = CategoryItem.MediaTypeId;
+            categoryItemEntity.DateReleased = DateOnly.FromDateTime(CategoryItem.DateReleased);
+
+            categoryItemRepository.Update(categoryItemEntity);
+            await categoryItemRepository.SaveChangesAsync();
+
+            return RedirectToPage("./Index", new { categoryId = categoryItemEntity.CategoryId });
         }
     }
 }

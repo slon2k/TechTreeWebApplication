@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TechTreeWebApplication.Areas.Admin.Models.Category;
 using TechTreeWebApplication.Areas.Admin.Models.CategoryItem;
 using TechTreeWebApplication.Entities;
@@ -14,27 +15,22 @@ namespace TechTreeWebApplication.Areas.Admin.Pages.CategoryItem
         private readonly ICategoryRepository categoryRepository;
         private readonly IMediaTypeRepository mediaTypeRepository;
 
+        public CreateModel(ICategoryItemRepository categoryItemRepository, 
+            ICategoryRepository categoryRepository,
+            IMediaTypeRepository mediaTypeRepository)
+        {
+            this.categoryItemRepository = categoryItemRepository ?? throw new ArgumentNullException(nameof(categoryItemRepository));
+            this.categoryRepository = categoryRepository ?? throw new ArgumentNullException(nameof(categoryRepository));
+            this.mediaTypeRepository = mediaTypeRepository ?? throw new ArgumentNullException(nameof(mediaTypeRepository));
+        }
+
         [BindProperty]
         public CategoryItemCreate CategoryItem { get; set; } = default!;
 
         public CategoryModel Category { get; set; } = default!;
 
-        public SelectList CategorySelectList { get; set; } = default!;
-
         public SelectList MediaTypeSelectList { get; set; } = default!;
 
-        public CreateModel(ICategoryItemRepository categoryItemRepository,
-            ICategoryRepository categoryRepository,
-            IMediaTypeRepository mediaTypeRepository)
-        {
-            ArgumentNullException.ThrowIfNull(categoryItemRepository, nameof(categoryItemRepository));
-            ArgumentNullException.ThrowIfNull(categoryRepository, nameof(categoryRepository));
-            ArgumentNullException.ThrowIfNull(mediaTypeRepository, nameof(mediaTypeRepository));
-            this.categoryItemRepository = categoryItemRepository;
-            this.categoryRepository = categoryRepository;
-            this.mediaTypeRepository = mediaTypeRepository;
-        }
-        
         public async Task<IActionResult> OnGet(int categoryId)
         {
             MediaTypeSelectList = new SelectList(await mediaTypeRepository.GetAllAsync(), "Id", "Title");
@@ -58,8 +54,6 @@ namespace TechTreeWebApplication.Areas.Admin.Pages.CategoryItem
 
             return Page();
         }
-
-
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
@@ -97,7 +91,7 @@ namespace TechTreeWebApplication.Areas.Admin.Pages.CategoryItem
                 Title = CategoryItem.Title,
                 Description = CategoryItem.Description,
                 MediaTypeId = CategoryItem.MediaTypeId,
-                DateReleased = CategoryItem.DateReleased,
+                DateReleased = DateOnly.FromDateTime(CategoryItem.DateReleased),
             });
             
             await categoryItemRepository.SaveChangesAsync();
