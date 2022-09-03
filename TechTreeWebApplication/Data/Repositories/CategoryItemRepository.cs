@@ -19,5 +19,14 @@ namespace TechTreeWebApplication.Data.Repositories
                 .Include(x => x.Category)
                 .ToListAsync(cancellationToken);
         }
+
+        public async Task<CategoryItemEntity> GetItemByIdAsync(int id, CancellationToken cancellationToken = default)
+        {
+            return await context.CategoryItems
+                .Include(x => x.Content)
+                .Include(x => x.MediaType)
+                .Include(x => x.Category)
+                .FirstOrDefaultAsync(x => x.CategoryId == id, cancellationToken);
+        }
     }
 }

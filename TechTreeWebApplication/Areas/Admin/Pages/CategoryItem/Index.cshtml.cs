@@ -50,7 +50,8 @@ namespace TechTreeWebApplication.Areas.Admin.Pages.CategoryItem
                     Description = x.Description,
                     CategoryId = x.CategoryId,
                     MediaTypeId = x.MediaTypeId,
-                    DateReleased = x.DateReleased.ToDateTime(TimeOnly.MinValue)
+                    DateReleased = x.DateReleased.ToDateTime(TimeOnly.MinValue),
+                    ContentId = x.Content?.Id ?? 0 
                 }).ToList();
 
             return Page();

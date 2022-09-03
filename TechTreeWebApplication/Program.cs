@@ -1,6 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using TechTreeWebApplication.Converters;
 using TechTreeWebApplication.Data;
 using TechTreeWebApplication.Data.Repositories;
 using TechTreeWebApplication.Entities;
@@ -19,7 +17,6 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ICategoryItemRepository, CategoryItemRepository>();
 builder.Services.AddScoped<IMediaTypeRepository, MediaTypeRepository>();
-builder.Services.AddScoped<ValueConverter<DateOnly, DateTime>, DateOnlyConverter>();
 builder.Services.AddRazorPages();
 
 var app = builder.Build();

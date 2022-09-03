@@ -23,5 +23,7 @@ namespace TechTreeWebApplication.Areas.Admin.Models.CategoryItem
 
         [DataType(DataType.Date)]
         public DateTime DateReleased { get; set; } = DateTime.MinValue;
+
+        public int ContentId { get; set; }
     }
 }

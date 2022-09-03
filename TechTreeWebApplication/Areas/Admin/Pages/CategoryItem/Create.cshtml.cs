@@ -96,7 +96,7 @@ namespace TechTreeWebApplication.Areas.Admin.Pages.CategoryItem
             
             await categoryItemRepository.SaveChangesAsync();
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("./Index", new { categoryId = CategoryItem.CategoryId });
         }
     }
 }

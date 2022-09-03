@@ -29,7 +29,7 @@ namespace TechTreeWebApplication.Areas.Admin.Pages.CategoryItem
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            var categoryItem = await categoryItemRepository.FindAsync(id);
+            var categoryItem = await categoryItemRepository.GetItemByIdAsync(id);
 
             if (categoryItem is null)
             {
@@ -61,6 +61,7 @@ namespace TechTreeWebApplication.Areas.Admin.Pages.CategoryItem
                 DateReleased = categoryItem.DateReleased.ToDateTime(TimeOnly.MinValue),
                 CategoryId = categoryItem.CategoryId,
                 Description = categoryItem.Description,
+                ContentId = categoryItem.Content?.Id ?? 0
             };
 
             return Page();
