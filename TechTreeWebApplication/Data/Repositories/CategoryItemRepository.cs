@@ -26,7 +26,7 @@ namespace TechTreeWebApplication.Data.Repositories
                 .Include(x => x.Content)
                 .Include(x => x.MediaType)
                 .Include(x => x.Category)
-                .FirstOrDefaultAsync(x => x.CategoryId == id, cancellationToken);
+                .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         }
     }
 }
