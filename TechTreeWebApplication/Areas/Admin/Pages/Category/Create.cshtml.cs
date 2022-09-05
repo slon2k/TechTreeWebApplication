@@ -22,7 +22,7 @@ namespace TechTreeWebApplication.Areas.Admin.Pages.Category
         }
 
         [BindProperty]
-        public CategoryCreate Category { get; set; } = default!;
+        public CategoryCreateModel Category { get; set; } = default!;
         
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD

@@ -2,8 +2,7 @@
 
 namespace TechTreeWebApplication.Areas.Admin.Models.Category
 {
-    public record CategoryModel : CategoryBaseModel
+    public record CategoryCreateModel : CategoryBaseModel
     {
-        public int Id { get; set; }
     }
 }

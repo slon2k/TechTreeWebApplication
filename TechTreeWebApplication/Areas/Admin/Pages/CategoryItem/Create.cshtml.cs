@@ -24,7 +24,7 @@ namespace TechTreeWebApplication.Areas.Admin.Pages.CategoryItem
         }
 
         [BindProperty]
-        public CategoryItemCreate CategoryItem { get; set; } = default!;
+        public CategoryItemCreateModel CategoryItem { get; set; } = default!;
 
         public CategoryModel Category { get; set; } = default!;
 
@@ -49,7 +49,7 @@ namespace TechTreeWebApplication.Areas.Admin.Pages.CategoryItem
                 Id = category.Id
             };
 
-            CategoryItem = new CategoryItemCreate { CategoryId = categoryId };
+            CategoryItem = new CategoryItemCreateModel { CategoryId = categoryId };
 
             return Page();
         }

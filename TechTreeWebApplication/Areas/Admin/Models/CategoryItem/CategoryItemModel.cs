@@ -2,27 +2,10 @@
 
 namespace TechTreeWebApplication.Areas.Admin.Models.CategoryItem
 {
-    public class CategoryItemModel
+    public record CategoryItemModel : CategoryItemBaseModel
     {
         [Required]
         public int Id { get; init; }
-
-        [Required]
-        public int CategoryId { get; init; }
-
-        [Required]
-        public int MediaTypeId { get; set; }
-
-        [Required]
-        [MaxLength(255)]
-        [MinLength(2)]
-        public string Title { get; set; }
-
-        [MaxLength(4000)]
-        public string Description { get; set; }
-
-        [DataType(DataType.Date)]
-        public DateTime DateReleased { get; set; } = DateTime.MinValue;
 
         public int ContentId { get; set; }
     }

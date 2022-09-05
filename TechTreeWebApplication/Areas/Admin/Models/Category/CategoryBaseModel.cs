@@ -2,7 +2,7 @@
 
 namespace TechTreeWebApplication.Areas.Admin.Models.Category
 {
-    public record CategoryCreate
+    public abstract record CategoryBaseModel
     {
         [Required]
         [MaxLength(255)]

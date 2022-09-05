@@ -2,7 +2,7 @@
 
 namespace TechTreeWebApplication.Areas.Admin.Models.CategoryItem
 {
-    public class CategoryItemCreate
+    public record CategoryItemBaseModel
     {
         [Required]
         public int CategoryId { get; set; }

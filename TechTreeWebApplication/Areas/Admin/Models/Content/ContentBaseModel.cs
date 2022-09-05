@@ -1,6 +1,6 @@
 ﻿namespace TechTreeWebApplication.Areas.Admin.Models.Content
 {
-    public abstract class ContentBaseModel
+    public abstract record ContentBaseModel
     {
         public int CategoryItemId { get; set; }
 
