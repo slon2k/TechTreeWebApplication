@@ -31,7 +31,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="CategoryItem.DateReleased" class="control-label"></label>
-                <input asp-for="CategoryItem.DateReleased" class="form-control" />
+                <input asp-for="CategoryItem.DateReleased" asp-format="{0:dd-mm-yyyy}" class="form-control" />
                 <span asp-validation-for="CategoryItem.DateReleased" class="text-danger"></span>
             </div>
             <div class="form-group">
