@@ -5,7 +5,7 @@ namespace TechTreeWebApplication.Converters
     public class DateOnlyConverter : ValueConverter<DateOnly, DateTime>
     {
         /// <summary>
-        /// Creates a new instance of this converter.
+        /// Creates a new instance of DateOnly converter.
         /// </summary>
         public DateOnlyConverter() : base(
                 d => d.ToDateTime(TimeOnly.MinValue),
