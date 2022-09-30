@@ -31,7 +31,8 @@
             </div>
             <div class="form-group">
                 <label asp-for="CategoryItem.DateReleased" class="control-label"></label>
-                <input asp-for="CategoryItem.DateReleased" asp-format="{0:dd-mm-yyyy}" class="form-control" />
+                @*<input asp-for="CategoryItem.DateReleased" asp-format="{0:dd-mm-yyyy}" class="form-control" />*@
+                <input type="text" id="DateReleased" name="CategoryItem.DateReleased" value="@Model.CategoryItem.DateReleased.ToString("dd-MM-yyyy")" class="datepicker form-control" />
                 <span asp-validation-for="CategoryItem.DateReleased" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -46,5 +47,8 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        await Html.RenderPartialAsync("_DateScriptsPartial");    
+    }
 }

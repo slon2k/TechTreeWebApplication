@@ -20,6 +20,6 @@ namespace TechTreeWebApplication.Areas.Admin.Models.CategoryItem
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime DateReleased { get; set; } = DateTime.MinValue;
+        public DateTime DateReleased { get; set; } = DateTime.Now;
     }
 }
