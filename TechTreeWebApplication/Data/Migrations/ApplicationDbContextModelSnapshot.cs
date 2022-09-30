@@ -51,15 +51,15 @@ namespace TechTreeWebApplication.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "990fe066-fb1e-404b-8c4c-24a51c79873a",
-                            ConcurrencyStamp = "e781339a-7d04-45ba-b178-8c75dd8ebe91",
+                            Id = "cd9add9a-4e57-4f22-8db3-d9e0676e3217",
+                            ConcurrencyStamp = "f2f87db4-8608-4d28-a4a7-fe78549ed484",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "a8af697d-6ff3-4f16-bcbe-cf7b62ae6a43",
-                            ConcurrencyStamp = "ecace1ed-f19b-42be-ae68-561c1f68d17b",
+                            Id = "df48d5e8-8cd6-4f9e-8be0-657e042a850d",
+                            ConcurrencyStamp = "26cb5bd2-d9b6-4e11-886a-56ccd28d2983",
                             Name = "User",
                             NormalizedName = "USER"
                         });

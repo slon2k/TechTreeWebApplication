@@ -11,12 +11,12 @@ namespace TechTreeWebApplication.Data.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "990fe066-fb1e-404b-8c4c-24a51c79873a", "e781339a-7d04-45ba-b178-8c75dd8ebe91", "Admin", "ADMIN" });
+                values: new object[] { "cd9add9a-4e57-4f22-8db3-d9e0676e3217", "f2f87db4-8608-4d28-a4a7-fe78549ed484", "Admin", "ADMIN" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "a8af697d-6ff3-4f16-bcbe-cf7b62ae6a43", "ecace1ed-f19b-42be-ae68-561c1f68d17b", "User", "USER" });
+                values: new object[] { "df48d5e8-8cd6-4f9e-8be0-657e042a850d", "26cb5bd2-d9b6-4e11-886a-56ccd28d2983", "User", "USER" });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -24,12 +24,12 @@ namespace TechTreeWebApplication.Data.Migrations
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "990fe066-fb1e-404b-8c4c-24a51c79873a");
+                keyValue: "cd9add9a-4e57-4f22-8db3-d9e0676e3217");
 
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "a8af697d-6ff3-4f16-bcbe-cf7b62ae6a43");
+                keyValue: "df48d5e8-8cd6-4f9e-8be0-657e042a850d");
         }
     }
 }
