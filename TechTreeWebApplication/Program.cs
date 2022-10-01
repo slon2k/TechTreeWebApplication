@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using TechTreeWebApplication.Data;
 using TechTreeWebApplication.Data.Repositories;
 using TechTreeWebApplication.Entities;
+using TechTreeWebApplication.Extensions;
 using TechTreeWebApplication.Interfaces;
 using TechTreeWebApplication.Options;
 
@@ -25,10 +26,7 @@ builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
-using var services = app.Services.CreateScope();
-var adminSettings = builder.Configuration.GetSection("AdminSettings").Get<AdminSettings>();
-var userManager = services.ServiceProvider.GetService<UserManager<ApplicationUser>>();
-ApplicationDbInitializer.SeedUsers(userManager, adminSettings);
+app.InitializeDb(builder.Configuration);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
