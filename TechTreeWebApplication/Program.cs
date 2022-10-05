@@ -5,7 +5,6 @@ using TechTreeWebApplication.Data.Repositories;
 using TechTreeWebApplication.Entities;
 using TechTreeWebApplication.Extensions;
 using TechTreeWebApplication.Interfaces;
-using TechTreeWebApplication.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
