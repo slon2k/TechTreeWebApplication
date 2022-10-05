@@ -12,5 +12,8 @@
 <partial name="_LoginModalPartial" />
 
 @section Scripts {
-    <script src="~/js/login.js" asp-append-version="true"></script>
+    @{
+        await Html.RenderPartialAsync("_LoginScriptsPartial");
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
